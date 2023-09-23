@@ -33,15 +33,40 @@ function App() {
       ],
     },
   ]);
+  const handleAddCategory = (name: string) => {
+    const newCategory: ICategories = {
+      id: categories.length + 1,
+      name,
+      tasks: []
+    }
+    setCategories([...categories, newCategory])
+  }
+  const handleAddTask = (categoryId: number, taskTitle: string) => {
+    setCategories((prevCategories) => {
+      return prevCategories.map((category) => {
+        if (category.id === categoryId) {
+          const newTask = {
+            id: category.tasks.length + 1,
+            title: taskTitle,
+          };
+          return {
+            ...category,
+            tasks: [...category.tasks, newTask],
+          };
+        }
+        return category;
+      });
+    });
+  };
 
   return (
     <div className="App">
       <Header />
       <Routes>
-        <Route path="/" element={<Home categories={categories} />} />
+        <Route path="/" element={<Home categories={categories} handleAddCategory={handleAddCategory} />} />
         <Route
           path="/tasks/:categoryId"
-          element={<Tasks categories={categories} />}
+          element={<Tasks categories={categories} handleAddTask={handleAddTask} />}
         />
       </Routes>
       <Footer />
