@@ -1,11 +1,14 @@
-import React from 'react'
+import Typography from "@mui/material/Typography";
+import React from "react";
 
-type Props = {}
+type Props = {};
 
 const Footer = (props: Props) => {
   return (
-    <div>Footer</div>
-  )
-}
+    <Typography className="bg-gray-200 text-center py-2">
+      Developed by ©️egorkaplayboy
+    </Typography>
+  );
+};
 
-export default Footer
+export default Footer;

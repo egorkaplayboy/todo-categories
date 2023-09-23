@@ -1,6 +1,7 @@
 import React from "react";
 import Tasks from "./Tasks";
 import { Link } from "react-router-dom";
+import { Button, TextField } from "@mui/material";
 
 interface ICategory {
   id: number;
@@ -29,22 +30,40 @@ const Home = (props: Props) => {
   return (
     <div>
       <form
+        className="flex justify-center"
         onSubmit={(e: React.FormEvent<HTMLFormElement>) => e.preventDefault()}
       >
-        <input
+        <TextField
+          variant="outlined"
+          label="Создайте категорию"
           type="text"
           value={categoryInput}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             setCategoryInput(e.target.value)
           }
+          onKeyPress={(e: React.KeyboardEvent<HTMLInputElement>) => {
+            if (e.key === "Enter") {
+              onAddCategory();
+            }
+          }}
         />
-        <button onClick={onAddCategory}>Добавить</button>
+        <Button
+          sx={{ marginLeft: 2 }}
+          variant="contained"
+          onClick={onAddCategory}
+        >
+          Добавить
+        </Button>
       </form>
-      <ul>
+      <ul className="flex justify-center flex-col items-center space-y-4 mt-5">
         {props.categories.map((category) => (
-          <li key={category.id}>
-            <Link to={`/tasks/${category.id}`}>{category.name}</Link>
-          </li>
+          <Link
+            to={`/tasks/${category.id}`}
+            key={category.id}
+            className="bg-gray-200 flex justify-center items-center p-4 rounded shadow-md hover:bg-gray-300 transition-colors w-96"
+          >
+            <li className="text-blue-500">{category.name}</li>
+          </Link>
         ))}
       </ul>
     </div>

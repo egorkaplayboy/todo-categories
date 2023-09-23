@@ -4,6 +4,7 @@ import { Routes, Route } from "react-router-dom";
 import Footer from "./components/Footer/Footer";
 import Tasks from "./pages/Tasks";
 import Home from "./pages/Home";
+import Container from "@mui/material/Container";
 
 interface ICategories {
   id: number;
@@ -18,18 +19,10 @@ function App() {
   const [categories, setCategories] = React.useState<ICategories[]>([
     {
       id: 1,
-      name: "Категория 1",
+      name: "Для трудоустройства",
       tasks: [
-        { id: 1, title: "Задача 1" },
-        { id: 2, title: "Задача 2" },
-      ],
-    },
-    {
-      id: 2,
-      name: "Категория 2",
-      tasks: [
-        { id: 3, title: "Задача 3" },
-        { id: 4, title: "Задача 4" },
+        { id: 1, title: "Выучить Node.js, Express" },
+        { id: 2, title: "Выучить Next.js" },
       ],
     },
   ]);
@@ -37,10 +30,10 @@ function App() {
     const newCategory: ICategories = {
       id: categories.length + 1,
       name,
-      tasks: []
-    }
-    setCategories([...categories, newCategory])
-  }
+      tasks: [],
+    };
+    setCategories([...categories, newCategory]);
+  };
   const handleAddTask = (categoryId: number, taskTitle: string) => {
     setCategories((prevCategories) => {
       return prevCategories.map((category) => {
@@ -60,15 +53,27 @@ function App() {
   };
 
   return (
-    <div className="App">
+    <div className="App flex flex-col min-h-screen">
       <Header />
-      <Routes>
-        <Route path="/" element={<Home categories={categories} handleAddCategory={handleAddCategory} />} />
-        <Route
-          path="/tasks/:categoryId"
-          element={<Tasks categories={categories} handleAddTask={handleAddTask} />}
-        />
-      </Routes>
+      <Container maxWidth="sm" className="flex-grow">
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <Home
+                categories={categories}
+                handleAddCategory={handleAddCategory}
+              />
+            }
+          />
+          <Route
+            path="/tasks/:categoryId"
+            element={
+              <Tasks categories={categories} handleAddTask={handleAddTask} />
+            }
+          />
+        </Routes>
+      </Container>
       <Footer />
     </div>
   );
