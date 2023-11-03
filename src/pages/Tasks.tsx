@@ -10,15 +10,23 @@ interface ICategory {
   tasks: {
     id: number;
     title: string;
+    isDone: boolean;
   }[];
 }
 
 interface Props {
   categories: ICategory[];
   handleAddTask: (categoryId: number, taskTitle: string) => void;
+  handleDeleteTask: (categoryId: number, taskId: number) => void;
+  handleCompleteTask: (categoryId: number, taskId: number) => void;
 }
 
-const Tasks = ({ categories, handleAddTask }: Props) => {
+const Tasks = ({
+  categories,
+  handleAddTask,
+  handleDeleteTask,
+  handleCompleteTask,
+}: Props) => {
   const [tasksInput, setTasksInput] = React.useState<string>("");
   const { categoryId } = useParams<{ categoryId: string }>();
   const navigate = useNavigate();
@@ -74,10 +82,22 @@ const Tasks = ({ categories, handleAddTask }: Props) => {
       <ul className="flex justify-center flex-col items-center space-y-4 mt-5">
         {category.tasks.map((task) => (
           <li
-            className="bg-gray-200 flex justify-center items-center p-4 rounded shadow-md hover:bg-gray-300 transition-colors w-96"
+            className="bg-gray-200 flex justify-between items-center p-4 rounded shadow-md hover:bg-gray-300 transition-colors w-96"
             key={task.id}
           >
-            {task.title}
+            <span
+              className={`${task.isDone ? "line-through" : ""}`}
+              onClick={() => handleCompleteTask(category.id, task.id)}
+            >
+              {task.title}
+            </span>
+            <Button
+              variant="outlined"
+              className="no-decoration"
+              onClick={() => handleDeleteTask(category.id, task.id)}
+            >
+              Удалить
+            </Button>
           </li>
         ))}
       </ul>

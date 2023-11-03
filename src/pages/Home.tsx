@@ -15,6 +15,7 @@ interface ICategory {
 interface Props {
   categories: ICategory[];
   handleAddCategory: (name: string) => void;
+  handleDeleteCategory: (categoryId: number) => void;
 }
 
 const Home = (props: Props) => {
@@ -57,13 +58,20 @@ const Home = (props: Props) => {
       </form>
       <ul className="flex justify-center flex-col items-center space-y-4 mt-5">
         {props.categories.map((category) => (
-          <Link
-            to={`/tasks/${category.id}`}
+          <div
             key={category.id}
-            className="bg-gray-200 flex justify-center items-center p-4 rounded shadow-md hover:bg-gray-300 transition-colors w-96"
+            className="bg-gray-200 flex justify-between items-center p-4 rounded shadow-md hover:bg-gray-300 transition-colors w-96"
           >
-            <li className="text-blue-500">{category.name}</li>
-          </Link>
+            <Link to={`/tasks/${category.id}`} className="text-blue-500">
+              {category.name}
+            </Link>
+            <Button
+              variant="outlined"
+              onClick={() => props.handleDeleteCategory(category.id)}
+            >
+              Удалить
+            </Button>
+          </div>
         ))}
       </ul>
     </div>
